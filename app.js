@@ -5,14 +5,16 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const moment = require('moment');
-const MongoStore = require('connect-mongodb-session')(session);
-const MongoClient = require('mongodb').MongoClient;
+// const MongoStore = require('connect-mongodb-session')(session);
+// const MongoClient = require('mongodb').MongoClient;
 const numeral = require('numeral');
 const helmet = require('helmet');
 const colors = require('colors');
 const common = require('./lib/common');
-const mongodbUri = require('mongodb-uri');
+// const mongodbUri = require('mongodb-uri');
 let handlebars = require('express-handlebars');
+
+var models = require('./models');
 
 // Validate our settings schema
 const Ajv = require('ajv');
@@ -322,49 +324,52 @@ app.on('uncaughtException', (err) => {
     process.exit(2);
 });
 
-MongoClient.connect(config.databaseConnectionString, {}, (err, client) => {
-    // On connection error we display then exit
-    if(err){
-        console.log(colors.red('Error connecting to MongoDB: ' + err));
-        process.exit(2);
-    }
+// MongoClient.connect(config.databaseConnectionString, {}, (err, client) => {
+//     // On connection error we display then exit
+//     if(err){
+//         console.log(colors.red('Error connecting to MongoDB: ' + err));
+//         process.exit(2);
+//     }
 
-    // select DB
-    const dbUriObj = mongodbUri.parse(config.databaseConnectionString);
-    let db;
-    // if in testing, set the testing DB
-    if(process.env.NODE_ENV === 'test'){
-        db = client.db('testingdb');
-    }else{
-        db = client.db(dbUriObj.database);
-    }
+//     // select DB
+//     const dbUriObj = mongodbUri.parse(config.databaseConnectionString);
+//     let db;
+//     // if in testing, set the testing DB
+//     if(process.env.NODE_ENV === 'test'){
+//         db = client.db('testingdb');
+//     }else{
+//         db = client.db(dbUriObj.database);
+//     }
 
-    // setup the collections
-    db.users = db.collection('users');
-    db.products = db.collection('products');
-    db.orders = db.collection('orders');
-    db.pages = db.collection('pages');
-    db.menu = db.collection('menu');
-    db.customers = db.collection('customers');
+//     // setup the collections
+//     db.users = db.collection('users');
+//     db.products = db.collection('products');
+//     db.orders = db.collection('orders');
+//     db.pages = db.collection('pages');
+//     db.menu = db.collection('menu');
+//     db.customers = db.collection('customers');
 
-    // add db to app for routes
-    app.dbClient = client;
-    app.db = db;
-    app.config = config;
-    app.port = app.get('port');
+//     // add db to app for routes
+//     app.dbClient = client;
+//     app.db = db;
+//     app.config = config;
+//     app.port = app.get('port');
 
-    // run indexing
-    common.runIndexing(app)
-    .then(app.listen(app.get('port')))
-    .then(() => {
-        // lift the app
-        app.emit('appStarted');
-        console.log(colors.green('expressCart running on host: http://localhost:' + app.get('port')));
-    })
-    .catch((err) => {
-        console.error(colors.red('Error setting up indexes:' + err));
-        process.exit(2);
-    });
-});
+//     // run indexing
+//     common.runIndexing(app)
+//     .then(app.listen(app.get('port')))
+//     .then(() => {
+//         // lift the app
+//         app.emit('appStarted');
+//         console.log(colors.green('expressCart running on host: http://localhost:' + app.get('port')));
+//     })
+//     .catch((err) => {
+//         console.error(colors.red('Error setting up indexes:' + err));
+//         process.exit(2);
+//     });
+// });
+
+
+
 
 module.exports = app;
