@@ -2,28 +2,28 @@
 module.exports = (sequelize, DataTypes) => {
     const TagJoin = sequelize.define('TagJoin', {
         id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: DataTypes.INTEGER,
         },
         tagId: {
-        type: DataTypes.INTEGER
+            type: DataTypes.INTEGER
         },
         taggable: {
-        type: DataTypes.STRING
+            type: DataTypes.STRING
         },
         taggableId: {
-        type: DataTypes.INTEGER,
-        references: null
+            type: DataTypes.INTEGER,
+            references: null
         },
         createdAt: {
-        allowNull: false,
-        type: DataTypes.DATE
+            allowNull: false,
+            type: DataTypes.DATE
         },
         updatedAt: {
-        allowNull: false,
-        type: DataTypes.DATE
+            allowNull: false,
+            type: DataTypes.DATE
         }
     },{
         tableName: 'tag_joins',
@@ -35,13 +35,13 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     TagJoin.associate = function(models){
-        TagJoin.belongsTo(models.Problem, {
-        foreignKey: 'taggableId',
-        constraints: false
+        TagJoin.belongsTo(models.Product, {
+            foreignKey: 'taggableId',
+            constraints: false
         });
 
         TagJoin.belongsTo(models.Tag, {
-        foreignKey: 'tagId',
+            foreignKey: 'tagId',
         });
     };
 

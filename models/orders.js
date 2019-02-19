@@ -71,5 +71,18 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    Order.belongsToMany(models.Product, {
+        through: {
+          model: models.OrderProduct,
+        },
+        as: 'users',
+        foreignKey: 'groupId'
+    });
+
+    Group.belongsTo(models.User, {
+        as: 'users',
+        foreignKey: 'groupId'
+    });
+
     return Order;
 };

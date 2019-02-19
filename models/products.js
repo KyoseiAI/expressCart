@@ -36,6 +36,25 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.DATE
         }
+    }, {
+        tableName: 'products',
+        timestamps: true
+    });
+
+    Problem.belongsTo(models.User);
+
+    Problem.belongsToMany(models.Tag, {
+        through: {
+          model: models.TagJoin,
+          unique: false,
+          scope: {
+            taggable: 'tags'
+          },
+        },
+        as: 'tags',
+        foreignKey: 'taggableId',
+        otherKey: 'tagId',
+        constraints: false
     });
 
     return Product;

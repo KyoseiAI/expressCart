@@ -30,5 +30,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
+    OrderProduct.belongsTo(models.Order, {
+        foreignKey: 'taggableId',
+        constraints: false
+    });
+
+    OrderProduct.belongsTo(models.Product, {
+        foreignKey: 'tagId',
+    });
+
     return OrderProduct;
 };

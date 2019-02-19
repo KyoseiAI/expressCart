@@ -63,5 +63,8 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true
     });
 
+    Customer.hasOne(models.User, { as: 'user' });
+    Customer.hasMany(models.Order, { as: 'orders' });
+
     return Customer;
 };

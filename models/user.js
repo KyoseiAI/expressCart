@@ -39,5 +39,8 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: true
     });
 
+    User.hasMany(models.Product, { as: 'products' });
+    User.hasOne(models.Customer, { as: 'customer' });
+
     return User;
 };
